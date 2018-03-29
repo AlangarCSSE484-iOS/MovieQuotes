@@ -11,6 +11,7 @@ import UIKit
 class MovieQuotesTableViewController: UITableViewController {
     
     let movieQuotesCellIdentifier = "MovieQuotesCell"
+    let noMovieQuoteCellIdentifier = "NoMovieQuoteCell"
     var movieQuotes = [MovieQuote]()
     
     override func viewDidLoad() {
@@ -20,6 +21,7 @@ class MovieQuotesTableViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+        self.navigationItem.leftBarButtonItem = self.editButtonItem
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showAddDialog))
         movieQuotes.append(MovieQuote(quote: "I'll be back!", movie: "Terminator"))
         movieQuotes.append(MovieQuote(quote: "I have a big head and little arms...I don't know how well this plan was thought through....", movie: "Meet the Robinsons"))
@@ -49,10 +51,15 @@ class MovieQuotesTableViewController: UITableViewController {
             self.movieQuotes.insert(movieQuote, at: 0)
             
             //we want animations!
-            self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.top)
             
-            //no animations here
-           // self.tableView.reloadData()
+            if (self.movieQuotes.count == 1) {
+                self.tableView.reloadData()
+                
+            } else {
+                self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.top)
+                //no animations here
+                // self.tableView.reloadData()
+            }
         
         }
         
@@ -78,17 +85,25 @@ class MovieQuotesTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return movieQuotes.count
+        return max(movieQuotes.count, 1)
     }
     
     
      override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: movieQuotesCellIdentifier, for: indexPath)
+        
+        var cell: UITableViewCell
+        
+        if movieQuotes.count == 0 {
+            cell = tableView.dequeueReusableCell(withIdentifier: noMovieQuoteCellIdentifier, for: indexPath)
+            return cell
+        } else {
+            cell = tableView.dequeueReusableCell(withIdentifier: movieQuotesCellIdentifier, for: indexPath)
      
-     // Configure the cell...
-        cell.textLabel?.text = movieQuotes[indexPath.row].quote
-        cell.detailTextLabel?.text = movieQuotes[indexPath.row].movie
-        return cell
+            // Configure the cell...
+            cell.textLabel?.text = movieQuotes[indexPath.row].quote
+            cell.detailTextLabel?.text = movieQuotes[indexPath.row].movie
+            return cell
+        }
      }
     
     
@@ -96,19 +111,25 @@ class MovieQuotesTableViewController: UITableViewController {
      // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
-        return true
+        return (movieQuotes.count > 0)
     }
     
     
-    /*
+    
      // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     }
-     }
-     */
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // Delete the row from the data source
+            movieQuotes.remove(at: indexPath.row)
+            if (movieQuotes.count == 0){
+                tableView.reloadData()
+            } else {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+            print(movieQuotes)
+        }
+    }
+    
     
     
     /*
