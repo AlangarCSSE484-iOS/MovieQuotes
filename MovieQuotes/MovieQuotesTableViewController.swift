@@ -76,6 +76,14 @@ class MovieQuotesTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        if movieQuotes.count == 0 {
+            super.setEditing(false, animated: animated)
+        } else {
+            super.setEditing(editing, animated: animated)
+        }
+    }
+    
     // MARK: - Table view data source
     
     //(defaults to 1)
@@ -123,6 +131,7 @@ class MovieQuotesTableViewController: UITableViewController {
             movieQuotes.remove(at: indexPath.row)
             if (movieQuotes.count == 0){
                 tableView.reloadData()
+                self.setEditing(false, animated: true)
             } else {
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
