@@ -7,10 +7,13 @@
 //
 
 import UIKit
-//hi there...where does this commit to?
+import Firebase
 
 
 class MovieQuotesTableViewController: UITableViewController {
+    
+    var quoteRef: CollectionReference!
+    var quotesListener: ListenerRegistration!
     
     let movieQuotesCellIdentifier = "MovieQuotesCell"
     let noMovieQuoteCellIdentifier = "NoMovieQuoteCell"
@@ -20,15 +23,14 @@ class MovieQuotesTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+
         self.navigationItem.leftBarButtonItem = self.editButtonItem
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showAddDialog))
-        movieQuotes.append(MovieQuote(quote: "I'll be back!", movie: "Terminator"))
-        movieQuotes.append(MovieQuote(quote: "I have a big head and little arms...I don't know how well this plan was thought through....", movie: "Meet the Robinsons"))
+        quoteRef = Firestore.firestore().collection("quotes")
+        
+//        movieQuotes.append(MovieQuote(quote: "I'll be back!", movie: "Terminator"))
+//        movieQuotes.append(MovieQuote(quote: "I have a big head and little arms...I don't know how well this plan was thought through....", movie: "Meet the Robinsons"))
+        
         
     }
     
@@ -77,7 +79,51 @@ class MovieQuotesTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData()
+        quotesListener = quoteRef.addSnapshotListener({ (querySnapshot, error) in
+            guard let snapshot = querySnapshot else {
+                print("Error fetching quotes. error: \(error!.localizedDescription)")
+                return
+            }
+            snapshot.documentChanges.forEach{(docChange) in
+                
+                if (docChange.type == .added){
+                    print("New quote: \(docChange.document.data())")
+                    self.quoteAdded(docChange.document)
+                }
+                if (docChange.type == .modified){
+                    print("Modified quote: \(docChange.document.data())")
+                    self.quoteUpdated(docChange.document)
+                }
+                if (docChange.type == .removed){
+                    print("Deleted quote: \(docChange.document.data())")
+                    self.quoteRemoved(docChange.document)
+                }
+                
+            }
+            self.tableView.reloadData()
+        })
+        
+        
+        //tableView.reloadData()
+    }
+    
+    func quoteAdded(_ document: DocumentSnapshot){
+        let newMovieQuote = MovieQuote(documentSnapshot: document)
+        movieQuotes.append(newMovieQuote)
+        
+    }
+    
+    func quoteUpdated(_ document: DocumentSnapshot){
+        
+    }
+    
+    func quoteRemoved(_ document: DocumentSnapshot){
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        quotesListener.remove()
     }
     
     override func didReceiveMemoryWarning() {
