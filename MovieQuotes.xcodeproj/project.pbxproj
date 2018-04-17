@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A583F9220862BB200AAF495 /* MovieQuoteDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A583F9120862BB200AAF495 /* MovieQuoteDetailViewController.swift */; };
 		0ACED82D206AA2DD009E8A4C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACED82C206AA2DD009E8A4C /* AppDelegate.swift */; };
 		0ACED830206AA2DD009E8A4C /* MovieQuotes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0ACED82E206AA2DD009E8A4C /* MovieQuotes.xcdatamodeld */; };
 		0ACED837206AA2DD009E8A4C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0ACED835206AA2DD009E8A4C /* Main.storyboard */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A583F9120862BB200AAF495 /* MovieQuoteDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuoteDetailViewController.swift; sourceTree = "<group>"; };
 		0ACED829206AA2DD009E8A4C /* MovieQuotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieQuotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0ACED82C206AA2DD009E8A4C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0ACED82F206AA2DD009E8A4C /* MovieQuotes.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MovieQuotes.xcdatamodel; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				0ACED82E206AA2DD009E8A4C /* MovieQuotes.xcdatamodeld */,
 				0ACED845206D367C009E8A4C /* MovieQuotesTableViewController.swift */,
 				0ACED847206D3957009E8A4C /* MovieQuote.swift */,
+				0A583F9120862BB200AAF495 /* MovieQuoteDetailViewController.swift */,
 			);
 			path = MovieQuotes;
 			sourceTree = "<group>";
@@ -143,6 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0ACED82D206AA2DD009E8A4C /* AppDelegate.swift in Sources */,
+				0A583F9220862BB200AAF495 /* MovieQuoteDetailViewController.swift in Sources */,
 				0ACED848206D3957009E8A4C /* MovieQuote.swift in Sources */,
 				0ACED846206D367C009E8A4C /* MovieQuotesTableViewController.swift in Sources */,
 				0ACED830206AA2DD009E8A4C /* MovieQuotes.xcdatamodeld in Sources */,
