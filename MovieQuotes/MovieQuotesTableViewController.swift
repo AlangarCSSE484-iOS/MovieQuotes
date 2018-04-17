@@ -102,6 +102,9 @@ class MovieQuotesTableViewController: UITableViewController {
                 }
                 
             }
+            self.movieQuotes.sort(by: { (mq1, mq2) -> Bool in
+                return mq1.created > mq2.created
+            })
             self.tableView.reloadData()
         })
         
@@ -200,14 +203,17 @@ class MovieQuotesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            movieQuotes.remove(at: indexPath.row)
-            if (movieQuotes.count == 0){
-                tableView.reloadData()
-                self.setEditing(false, animated: true)
-            } else {
-                tableView.deleteRows(at: [indexPath], with: .fade)
-            }
-            print(movieQuotes)
+//            movieQuotes.remove(at: indexPath.row)
+//            if (movieQuotes.count == 0){
+//                tableView.reloadData()
+//                self.setEditing(false, animated: true)
+//            } else {
+//                tableView.deleteRows(at: [indexPath], with: .fade)
+//            }
+//            print(movieQuotes)
+            let movieQuoteToDelete = movieQuotes[indexPath.row]
+            quoteRef.document(movieQuoteToDelete.id!).delete()
+            
         }
     }
     
