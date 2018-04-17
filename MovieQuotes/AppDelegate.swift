@@ -7,7 +7,8 @@
 //
 
 import UIKit
-import CoreData
+//import CoreData
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
@@ -19,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         // Override point for customization after application launch.
         //TODO: pass the managed object context into the view controller once we do CoreData
        // controller.managedObjectContext = self.persistentContainer.viewContext
+        FirebaseApp.configure()
         return true
     }
 
