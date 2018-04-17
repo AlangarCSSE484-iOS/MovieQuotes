@@ -13,16 +13,17 @@ class MovieQuote: NSObject {
     var id: String?
     var quote: String
     var movie: String
-    var created: Date?
+    var created: Date!
     
     let quoteKey = "quote"
     let movieKey = "movie"
+    let createdKey = "created"
     
     
     init(quote: String, movie: String) {
         self.quote = quote
         self.movie = movie
-        //self.created = Date()
+        self.created = Date()
     }
     
     init(documentSnapshot: DocumentSnapshot) {
@@ -31,7 +32,20 @@ class MovieQuote: NSObject {
         self.quote = data[quoteKey] as! String
         self.movie = data[movieKey] as! String
         
+        
+        
+        if (data[createdKey] != nil){
+            self.created = data[createdKey] as! Date
+        }
+        
     }
+    
+    var data: [String: Any] {
+        return [quoteKey: self.quote,
+                movieKey: self.movie,
+                createdKey: self.created]
+    }
+    
     
     
     

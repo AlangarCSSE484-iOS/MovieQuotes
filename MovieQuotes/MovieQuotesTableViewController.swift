@@ -53,20 +53,22 @@ class MovieQuotesTableViewController: UITableViewController {
             print(quoteTextField.text!)
             print(movieTextField.text!)
             
-            let movieQuote = MovieQuote(quote: quoteTextField.text!, movie: movieTextField.text!)
-            self.movieQuotes.insert(movieQuote, at: 0)
+            let mq = MovieQuote(quote: quoteTextField.text!, movie: movieTextField.text!)
+            self.quoteRef.addDocument(data: mq.data)
             
-            //we want animations!
-            
-            if (self.movieQuotes.count == 1) {
-                self.tableView.reloadData()
-                
-            } else {
-                self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.top)
-                //no animations here
-                // self.tableView.reloadData()
-            }
-        
+//            self.movieQuotes.insert(movieQuote, at: 0)
+//
+//            //we want animations!
+//
+//            if (self.movieQuotes.count == 1) {
+//                self.tableView.reloadData()
+//
+//            } else {
+//                self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.top)
+//                //no animations here
+//                // self.tableView.reloadData()
+//            }
+//
         }
         
         alertController.addAction(cancelAction)
@@ -79,7 +81,7 @@ class MovieQuotesTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        quotesListener = quoteRef.addSnapshotListener({ (querySnapshot, error) in
+        quotesListener = quoteRef.order(by: "created", descending: true).limit(to: 50).addSnapshotListener({ (querySnapshot, error) in
             guard let snapshot = querySnapshot else {
                 print("Error fetching quotes. error: \(error!.localizedDescription)")
                 return
@@ -114,10 +116,25 @@ class MovieQuotesTableViewController: UITableViewController {
     }
     
     func quoteUpdated(_ document: DocumentSnapshot){
-        
+        let modifiedMovieQuote = MovieQuote(documentSnapshot: document)
+        for mq in movieQuotes {
+            if (mq.id == modifiedMovieQuote.id){
+                mq.quote = modifiedMovieQuote.quote
+                mq.movie = modifiedMovieQuote.movie
+                break
+            }
+        }
     }
     
     func quoteRemoved(_ document: DocumentSnapshot){
+        //let modifiedMovieQuote = MovieQuote(documentSnapshot: document)
+        for i in 0..<movieQuotes.count {
+            if movieQuotes[i].id == document.documentID{
+                movieQuotes.remove(at: i)
+                break
+            }
+        }
+        
         
     }
     
