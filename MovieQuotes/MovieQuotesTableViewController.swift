@@ -226,10 +226,9 @@ class MovieQuotesTableViewController: UITableViewController {
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == ShowDetailSegueIdentifier{
             if let indexPath = tableView.indexPathForSelectedRow{
-                (segue.destination as! MovieQuoteDetailViewController).movieQuote =
-                    movieQuotes[indexPath.row]
+                (segue.destination as! MovieQuoteDetailViewController).movieQuoteRef =
+                    quoteRef.document(movieQuotes[indexPath.row].id!)
             }
-            
         }
      }
  
