@@ -46,19 +46,22 @@ class MovieQuoteDetailViewController: UIViewController {
                                          style: .cancel,
                                          handler: nil)
         
-        let createQuoteAction =  UIAlertAction(title: "Edit",
+        let editQuoteAction =  UIAlertAction(title: "Edit",
                                                style: .default) {
                                                 (action) in
                                                 let quoteTextField = alertController.textFields![0]
                                                 let movieTextField = alertController.textFields![1]
                                                 self.movieQuote?.quote = quoteTextField.text!
                                                 self.movieQuote?.movie = movieTextField.text!
-                                                self.updateView()
+//                                                self.updateView()
+                                                
+                                                
+                                                self.movieQuoteRef?.setData(self.movieQuote!.data)
                                                 
         }
         
         alertController.addAction(cancelAction)
-        alertController.addAction(createQuoteAction)
+        alertController.addAction(editQuoteAction)
         present(alertController, animated: true, completion: nil)
         
     }
